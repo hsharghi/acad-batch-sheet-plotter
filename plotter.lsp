@@ -1,4 +1,4 @@
-; ver. 0.8.7
+; ver. 0.9
 
 
 (defun c:plotter ()
@@ -8,6 +8,8 @@
 (if (/= wucs 1)
   (command "ucs" "W")
 )
+
+  (setq plotScale 0.1)
 
   (princ "\nSpecify sheet plot area: \n select first  corner:")
   (setq firstPoint (getpoint))
@@ -47,6 +49,17 @@
   (setq widthPlotArea (abs widthPlotArea))
   (setq heightPlotArea (- (cadr secondPlotArea) (cadr firstPlotArea)))
   (setq heightPlotArea (abs heightPlotArea))
+  (setq heightPlotArea (abs heightPlotArea))
+
+  (princ "enter plot scale 1=? : < ")
+  (princ plotScale)
+  (princ " > ")
+  (setq temp (getdist))
+    (if (= temp nil)
+    (setq temp plotScale)
+  )
+  (setq plotScale temp)
+
 
   (setq numH 1)
   (setq numV 1)
@@ -56,6 +69,9 @@
 
   (setq i 0)
   (setq j 0)
+
+  (setq plotScaleValue (strcat "1=" (vl-princ-to-string (eval plotScale))))
+  (princ plotScaleValue)
 
   (while (< j numV)
     (while (< i numH)
@@ -78,7 +94,7 @@
 		  "W"
 		  ll
 		  ur
-		  "1=0.1"
+		  plotScaleValue
 		  ""
 		  ""
 		  ""
